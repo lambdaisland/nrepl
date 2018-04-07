@@ -17,13 +17,13 @@
    ["-m" "--middleware SYMBOL" "Extra middleware to inject. Can be specified multiple times. Use a namespaced symbol."
     :parse-fn symbol
     :assoc-fn accumulate-vector]
-   ["-b" "--bind" "Host to bind the interface on. Default 127.0.0.1"]
+   ["-b" "--bind HOST" "Host to bind the interface on. Default 127.0.0.1"]
    ["-s" "--silent" "Don't print the welcome message"]
    ["-H" "--nrepl-help" "Display this help message"]])
 
 (defn help [args]
   (println "\nUSAGE:\n")
-  (println "clj -m" (str *ns*) "[OPTIONS]\n")
+  (println "clj -m" (namespace `help) "[OPTIONS]\n")
   (println (:summary args))
   (System/exit (if (:errors args) 1 0)))
 
@@ -33,8 +33,8 @@
       (run! println errors)
       (help args))
 
-    (let [{:keys [test-help silent bind port]} (merge nrepl/*default-opts* options)]
-      (when test-help
+    (let [{:keys [nrepl-help silent bind port]} (merge nrepl/*default-opts* options)]
+      (when nrepl-help
         (help args))
 
       (when-not silent
