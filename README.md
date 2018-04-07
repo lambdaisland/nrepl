@@ -30,6 +30,9 @@ the default handler, but make it easy to configure middleware.
 Only start an nREPL server, don't provide an actual REPL, since `clojure.main`
 already does that.
 
+Create an `.nrepl-port` file in the current directory, so tooling can discover
+the instance.
+
 ## Usage
 
 ```
@@ -66,7 +69,7 @@ Starting nREPL server on 0.0.0.0:9999
 The recommended way to use `lambdaisland/nrepl` is by adding it to your `deps.edn`, but you can also invoke it directly like this:
 
 ```
-clj -Sdeps '{lambdaisland/nrepl {:mvn/version "VERSION"}}' -m lambdaisland.nrepl.main
+clj -Sdeps '{:deps {lambdaisland/nrepl {:mvn/version "VERSION"}}}' -m lambdaisland.nrepl.main
 ```
 
 ## Use as a library
