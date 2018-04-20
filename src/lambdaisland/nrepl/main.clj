@@ -18,6 +18,8 @@
     :parse-fn symbol
     :assoc-fn accumulate-vector]
    ["-b" "--bind HOST" "Host to bind the interface on. Default 127.0.0.1"]
+   ["-g" "--greeting-fn SYMBOL" "Greeting function, called whenever a client connects."
+    :parse-fn symbol]
    ["-s" "--silent" "Don't print the welcome message"]
    ["-H" "--nrepl-help" "Display this help message"]])
 
@@ -26,6 +28,11 @@
   (println "clj -m" (namespace `help) "[OPTIONS]\n")
   (println (:summary args))
   (System/exit (if (:errors args) 1 0)))
+
+(defn sym->var [sym]
+  (when sym
+    (require (symbol (namespace sym)))
+    (resolve sym)))
 
 (defn -main [& args]
   (let [{:keys [errors options] :as args} (parse-opts args cli-options)]
@@ -44,6 +51,6 @@
         .deleteOnExit
         (spit port)))
 
-    (nrepl/start-server options)
+    (nrepl/start-server (update options :greeting-fn sym->var))
 
     (Thread/sleep Long/MAX_VALUE)))

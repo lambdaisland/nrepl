@@ -40,11 +40,14 @@
              (swap! session assoc
                     init-ns-sentinel      true
                     (var *data-readers*)  (.getRawRoot #'*data-readers*)
-                    (var *ns*)            (try (require init-ns)
-                                               (create-ns init-ns)
-                                               (catch Throwable t
-                                                 (.printStackTrace t)
-                                                 (create-ns 'user)))))
+                    (var *ns*)            (do
+                                            (try
+                                              (require init-ns)
+                                              (catch java.io.FileNotFoundException e)
+                                              (catch Throwable t
+                                                (println "Error in init-ns" init-ns)
+                                                (.printStackTrace t)))
+                                            (create-ns init-ns))))
            (handler msg))))]
     (doto wrap-init-vars'
       ;; set-descriptor! currently nREPL only accepts a var
@@ -82,16 +85,18 @@
 
   Options
 
-  - `:port`       Port to listen on
-  - `:bind`       Interface (host) to bind on
-  - `:middleware` Extra middleware to load, seq of symbols/vars
-  - `:init-ns`    Namespace (symbol) to load and use as initial namespace"
+  - `:port`        Port to listen on
+  - `:bind`        Interface (host) to bind on
+  - `:middleware`  Extra middleware to load, seq of symbols/vars
+  - `:init-ns`     Namespace (symbol) to load and use as initial namespace
+  - `:greeting-fn` Called after a client connects, receives a clojure.tools.nrepl.transport/Transport"
   [options]
-  (let [{:keys [port bind middleware init-ns]} (merge *default-opts* options)]
+  (let [{:keys [port bind middleware init-ns greeting-fn]} (merge *default-opts* options)]
     (let [middleware (-> (wrap-init-vars init-ns)
                          (cons middleware)
                          expand-mw)
           handler    (apply nrepl/default-handler middleware)]
       (nrepl/start-server :bind bind
                           :port port
-                          :handler handler))))
+                          :handler handler
+                          :greeting-fn greeting-fn))))
