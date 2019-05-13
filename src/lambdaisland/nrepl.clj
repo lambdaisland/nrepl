@@ -1,7 +1,7 @@
 (ns lambdaisland.nrepl
-  (:require [clojure.tools.nrepl.server :as nrepl]
-            [clojure.tools.nrepl.middleware :as nrepl-mw]
-            [clojure.tools.nrepl.middleware.session :as nrepl-mw-session]))
+  (:require [nrepl.server :as nrepl]
+            [nrepl.middleware :as nrepl-mw]
+            [nrepl.middleware.session :as nrepl-mw-session]))
 
 (def ^:dynamic *default-opts*
   {:bind "127.0.0.1"
