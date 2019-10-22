@@ -9,7 +9,7 @@ clj -m lambdaisland.nrepl.main
 ## Version information
 
 ``` clojure
-{lambdaisland/nrepl {:mvn/version "0.2.0}}
+{lambdaisland/nrepl {:mvn/version "0.2.0"}}
 ```
 
 ## Rationale
