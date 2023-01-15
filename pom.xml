@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>lambdaisland</groupId>
   <artifactId>nrepl</artifactId>
-  <version>0.2.0</version>
+  <version>0.3.0</version>
   <name>lambdaisland/nrepl</name>
   <description>nREPL wrapper + main entry point</description>
 
@@ -14,9 +14,9 @@
       <version>1.9.0</version>
     </dependency>
     <dependency>
-      <groupId>org.clojure</groupId>
-      <artifactId>tools.nrepl</artifactId>
-      <version>0.2.12</version>
+      <groupId>nrepl</groupId>
+      <artifactId>nrepl</artifactId>
+      <version>0.6.0</version>
     </dependency>
     <dependency>
       <groupId>org.clojure</groupId>
